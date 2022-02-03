@@ -38,7 +38,7 @@ export const addProduct = (form) => {
         dispatch(addProductStart());
 
         const res = await userRequest.post(`/api/product/create`, form);
-
+        console.log(res.data);
         if (res.status === 201) {
             dispatch(addProductSuccess());
             dispatch(getAllProduct());

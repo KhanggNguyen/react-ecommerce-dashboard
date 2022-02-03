@@ -5,6 +5,8 @@ import { getAllProduct } from "./actions/product";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Login, Register } from "./components";
 import { Dashboard, Categories, Products, Customers, Orders } from "./pages";
+import { getAllOrders } from "./actions/order";
+import { getAllUser } from "./actions/user";
 
 
 const PrivateOutlet = ({ authenticated }) => {
@@ -21,6 +23,8 @@ const App = () => {
         if(auth.authenticated){
             dispatch(getAllCategory());
             dispatch(getAllProduct());
+            dispatch(getAllOrders());
+            dispatch(getAllUser());
         }
     }, [auth.authenticated]);
 

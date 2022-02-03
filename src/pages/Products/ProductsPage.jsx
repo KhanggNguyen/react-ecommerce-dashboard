@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import { Add, Edit, Delete, Visibility, Search } from "@material-ui/icons";
 import {
+    getAllProduct,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -56,7 +57,11 @@ const ProductsPage = () => {
 
     useEffect(() => {
         console.log(categoryFilter);
-        dispatch(getProductsByCategory(categoryFilter));
+        if (categoryFilter) {
+            dispatch(getProductsByCategory(categoryFilter));
+        }else{
+            dispatch(getAllProduct());
+        }
     }, [categoryFilter]);
 
     const createCategoryList = (categories, options = []) => {
@@ -96,6 +101,7 @@ const ProductsPage = () => {
             setPrice("");
             setDescription("");
             setCategoryId("");
+            setProductPicture([]);
             setProductPictures([]);
             setProductDetailSelected(null);
         }
@@ -104,6 +110,7 @@ const ProductsPage = () => {
     };
 
     const handleClose = () => {
+        setProductDetailSelected(null);
         setOpen(false);
     };
 
@@ -140,7 +147,7 @@ const ProductsPage = () => {
                 form.append("productPicture", picture);
             }
         }
-
+        
         if (productDetailSelected) {
             dispatch(updateProduct(form)).then(() => setOpen(false));
         } else {
@@ -350,6 +357,7 @@ const ProductsPage = () => {
                             value={name}
                             placeholder={`Product Name`}
                             onChange={(e) => setName(e.target.value)}
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
@@ -359,6 +367,7 @@ const ProductsPage = () => {
                             value={quantity}
                             placeholder={`Product Quantity`}
                             onChange={(e) => setQuantity(e.target.value)}
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
@@ -368,6 +377,7 @@ const ProductsPage = () => {
                             value={price}
                             placeholder={`Product Price`}
                             onChange={(e) => setPrice(e.target.value)}
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
@@ -376,6 +386,7 @@ const ProductsPage = () => {
                             value={categoryId}
                             handleChange={(e) => setCategoryId(e.target.value)}
                             options={categoryList}
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
@@ -389,10 +400,11 @@ const ProductsPage = () => {
                             multiline
                             minRows={4}
                             maxRows={10}
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                        {
+                        {productPicture.img ? (
                             <ButtonBase className={classes.image}>
                                 <img
                                     className={classes.img}
@@ -400,7 +412,7 @@ const ProductsPage = () => {
                                     src={productPicture.img}
                                 />
                             </ButtonBase>
-                        }
+                        ) : null}
                     </Grid>
                 </Grid>
 

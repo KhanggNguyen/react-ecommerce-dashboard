@@ -17,7 +17,7 @@ const Input = (props) => {
             input = (
                 <FormControl fullWidth>
                     <InputLabel>{props.label}</InputLabel>
-                    <Select value={props.value} onChange={props.handleChange}>
+                    <Select value={props.value} onChange={props.handleChange} required>
                         <MenuItem value="" selected>{props.placeholder}</MenuItem>
                         {props.options?.length > 0
                             ? props.options.map((option, index) => (
