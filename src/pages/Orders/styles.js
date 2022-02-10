@@ -58,5 +58,5 @@ export default makeStyles((theme) => ({
     },
     table: {
         minWidth: "100%"
-    }
+    },
 }));
