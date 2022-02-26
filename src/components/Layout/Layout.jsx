@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, createTheme } from "@material-ui/core";
+import { Box, createTheme, CssBaseline } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import { useSelector } from "react-redux";
 import { Sidebar } from "../index";
@@ -14,11 +14,10 @@ const Layout = (props) => {
                 <Box
                     style={{
                         display: "flex",
-                        flexGrow: 1,
-                        height: "100vh",
-                        overflow: "auto",
+                        minHeight: "100vh",
                     }}
                 >
+                    <CssBaseline />
                     <Sidebar title={props.title} />
                     {props.children}
                 </Box>

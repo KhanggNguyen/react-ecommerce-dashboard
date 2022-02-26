@@ -2,7 +2,9 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
     box: {
-        width: "100%"
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "auto",
     },
     paper: {
         padding: theme.spacing(2),
@@ -10,12 +12,12 @@ export default makeStyles((theme) => ({
         minWidth: "80%",
     },
     formCreate: {
-        '& *' : {
-            margin: "2px 0px"
-        }
+        "& *": {
+            margin: "2px 0px",
+        },
     },
     detailDialog: {
-        minWidth: "1000px"
+        minWidth: "1000px",
     },
     image: {
         width: 128,
@@ -35,28 +37,18 @@ export default makeStyles((theme) => ({
         WebkitLineClamp: 5,
     },
     formDescription: {
-        '& input': {
-            height: 200
-        }
-    },
-    titleCell: {
-        width: "100px",
-    },
-    descriptionCell: {
-        width: "400px",
-        
+        "& input": {
+            height: 200,
+        },
     },
     grid: {
-        margin: 0
+        margin: 0,
     },
     tablePaper: {
         width: "100%",
-        margin: '10px 0',
-        padding: '10px',
+        margin: "10px 0",
+        padding: "10px",
         display: "flex",
         flexDirection: "column",
     },
-    table: {
-        minWidth: "100%"
-    }
 }));

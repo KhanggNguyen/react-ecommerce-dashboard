@@ -1,9 +1,9 @@
 import {
     Box,
-    Button,
     Container,
     Divider,
     Grid,
+    IconButton,
     MenuItem,
     Paper,
     Select,
@@ -21,6 +21,7 @@ import {
 import { Edit, Visibility } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { updateOrder } from "../../actions/order";
 import { FormDialog, Layout } from "../../components";
 
 import useStyles from "./styles";
@@ -37,6 +38,8 @@ const Orders = () => {
     useEffect(() => {}, []);
 
     const formatDate = (date) => {
+        if (!date) return "";
+
         return new Intl.DateTimeFormat("fr-FR", {
             year: "numeric",
             month: "2-digit",
@@ -44,16 +47,19 @@ const Orders = () => {
         }).format(Date.parse(date));
     };
 
-    const handleSubmitDialog = () => {};
-
     const showOrderDetailDialog = (order) => {
+        
         setOrderSelected(order);
         for (let i = 0; i < order.orderStatus.length; i++) {
             if (!order.orderStatus[i].isCompleted) {
                 setOrderSelectedStatus(i - 1);
                 break;
             }
+            if(orderSelectedStatus === 0 && i == order.orderStatus.length-1){
+                setOrderSelectedStatus(order.orderStatus.length);
+            }
         }
+        
         setOrderDetailDialog(true);
     };
 
@@ -63,8 +69,23 @@ const Orders = () => {
         setOrderDetailDialog(false);
     };
 
+    const handleSubmitDetailDialog = (orderId) => {
+        if (!orderSelected) {
+            return;
+        }
+        
+        const type = orderSelected.orderStatus;
+
+        const payload = {
+            orderId,
+            type: type[orderSelectedStatus].type,
+        };
+
+        dispatch(updateOrder(payload));
+    };
+
     const renderOrderDetailDialog = () => {
-        if (!orderDetailDialog) {
+        if (!orderSelected || !orderDetailDialog) {
             return;
         }
 
@@ -77,9 +98,16 @@ const Orders = () => {
                 buttons={[
                     {
                         label: "Close",
-                        variant: "contained",
-                        color: "primary",
+                        variant: "outlined",
+                        color: "default",
                         onClick: closeOrderDetailDialog,
+                    },
+                    {
+                        label: "Save",
+                        variant: "outlined",
+                        color: "primary",
+                        onClick: () =>
+                            handleSubmitDetailDialog(orderSelected._id),
                     },
                 ]}
                 fullWidth
@@ -148,12 +176,9 @@ const Orders = () => {
                                                                 <StepLabel>
                                                                     {`${
                                                                         item.type
-                                                                    } \n ${
-                                                                        item.date &&
-                                                                        formatDate(
-                                                                            item.date
-                                                                        )
-                                                                    }`}
+                                                                    } \n ${formatDate(
+                                                                        item.date
+                                                                    )}`}
                                                                 </StepLabel>
                                                             </Step>
                                                         )
@@ -163,12 +188,12 @@ const Orders = () => {
                                             <Grid item xs={12} sm={12}>
                                                 <Select
                                                     label={`Order status`}
-                                                    value={orderSelectedStatus+1}
-                                                    onChange={(e) =>
+                                                    value={orderSelectedStatus}
+                                                    onChange={(e) => {
                                                         setOrderSelectedStatus(
                                                             e.target.value
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                 >
                                                     {orderSelected.orderStatus.map(
                                                         (status, index) => {
@@ -251,15 +276,15 @@ const Orders = () => {
                                               {formatDate(_order.createdAt)}
                                           </TableCell>
                                           <TableCell align="center">
-                                              <Button
+                                              <IconButton
                                                   onClick={() =>
                                                       showOrderDetailDialog(
                                                           _order
                                                       )
                                                   }
                                               >
-                                                  <Visibility /> Detail
-                                              </Button>
+                                                  <Visibility />
+                                              </IconButton>
                                           </TableCell>
                                       </TableRow>
                                   );

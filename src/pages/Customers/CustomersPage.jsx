@@ -1,6 +1,6 @@
 import {
     Box,
-    Button,
+    IconButton,
     Container,
     Grid,
     Paper,
@@ -105,7 +105,6 @@ const Customers = () => {
                             <TableCell>#</TableCell>
                             <TableCell align="center">Name</TableCell>
                             <TableCell align="center">Email</TableCell>
-                            <TableCell align="center">Username</TableCell>
                             <TableCell align="center">Created</TableCell>
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
@@ -115,27 +114,23 @@ const Customers = () => {
                             ? user.users.map((_user, index) => {
                                   return (
                                       <TableRow key={_user._id}>
-                                          <TableCell align="center">
+                                          <TableCell align="center" style={{width: "5%"}}>
                                               {index + 1}
                                           </TableCell>
                                           <TableCell
                                               align="center"
                                               className={classes.titleCell}
+                                              style={{width: "20%"}}
                                           >
                                               {`${_user.firstName} ${_user.lastName}`}
                                           </TableCell>
                                           <TableCell
                                               align="left"
-                                              className={
-                                                  classes.descriptionCell
-                                              }
+                                              style={{width: "40%"}}    
                                           >
                                               {_user.email}
                                           </TableCell>
-                                          <TableCell align="center">
-                                              {_user.userName}
-                                          </TableCell>
-                                          <TableCell align="center">
+                                          <TableCell align="center" style={{width: "20%"}}>
                                               {new Intl.DateTimeFormat(
                                                   "fr-FR",
                                                   {
@@ -150,21 +145,21 @@ const Customers = () => {
                                                   Date.parse(_user.createdAt)
                                               )}
                                           </TableCell>
-                                          <TableCell align="center">
-                                              <Button
+                                          <TableCell align="center" style={{width: "15%"}}>
+                                              <IconButton
                                                   onClick={() =>
                                                       showDetailDialog(_user)
                                                   }
                                               >
-                                                  <Visibility /> Detail
-                                              </Button>
-                                              <Button
+                                                  <Visibility />
+                                              </IconButton>
+                                              <IconButton
                                                   onClick={() => {
                                                       handleOpen(_user);
                                                   }}
                                               >
-                                                  <Edit /> Edit
-                                              </Button>
+                                                  <Edit />
+                                              </IconButton>
                                           </TableCell>
                                       </TableRow>
                                   );

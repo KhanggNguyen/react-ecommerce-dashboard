@@ -2,7 +2,9 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
     box: {
-        width: "100%"
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "auto",
     },
     paper: {
         padding: theme.spacing(2),

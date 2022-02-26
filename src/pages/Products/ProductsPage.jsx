@@ -16,6 +16,7 @@ import {
     Paper,
     Typography,
     ButtonBase,
+    IconButton,
 } from "@material-ui/core";
 import { Add, Edit, Delete, Visibility, Search } from "@material-ui/icons";
 import {
@@ -42,6 +43,9 @@ const ProductsPage = () => {
     const [productPicture, setProductPicture] = useState([]);
     const [productPictures, setProductPictures] = useState([]);
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const [categoryFilter, setCategoryFilter] = useState("");
 
     const [open, setOpen] = useState(false);
@@ -59,16 +63,17 @@ const ProductsPage = () => {
         console.log(categoryFilter);
         if (categoryFilter) {
             dispatch(getProductsByCategory(categoryFilter));
-        }else{
+        } else {
             dispatch(getAllProduct());
         }
     }, [categoryFilter]);
 
     const createCategoryList = (categories, options = []) => {
         for (let category of categories) {
-            options.push({ value: category._id, name: category.name });
             if (category.children.length > 0) {
                 createCategoryList(category.children, options);
+            } else {
+                options.push({ value: category._id, name: category.name });
             }
         }
 
@@ -147,7 +152,7 @@ const ProductsPage = () => {
                 form.append("productPicture", picture);
             }
         }
-        
+
         if (productDetailSelected) {
             dispatch(updateProduct(form)).then(() => setOpen(false));
         } else {
@@ -166,19 +171,42 @@ const ProductsPage = () => {
         setDeleteProductDialog(false);
     };
 
+    const handlePageChange = (event, newPage) => {
+        setPage(newPage);
+    }
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    }
+
+    const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - product.products.length) : 0;
+
     const renderProducts = () => {
         return (
             <Paper className={classes.tablePaper}>
-                <Table size="medium" className={classes.table}>
+                <Table size="small" className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>#</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="center">Description</TableCell>
-                            <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Quantity</TableCell>
-                            <TableCell align="center">Category</TableCell>
-                            <TableCell align="center">Actions</TableCell>
+                            <TableCell variant="head" align="center">
+                                #
+                            </TableCell>
+                            <TableCell variant="head" align="center">
+                                Name
+                            </TableCell>
+                            <TableCell variant="head" align="center">
+                                Price
+                            </TableCell>
+                            <TableCell variant="head" align="center">
+                                Quantity
+                            </TableCell>
+                            <TableCell variant="head" align="center">
+                                Category
+                            </TableCell>
+                            <TableCell variant="head" align="center">
+                                Actions
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -186,58 +214,56 @@ const ProductsPage = () => {
                             ? product.products.map((product, index) => {
                                   return (
                                       <TableRow key={product._id}>
-                                          <TableCell align="center">
+                                          <TableCell
+                                              variant="body"
+                                              align="center"
+                                              style={{width: "5%"}}
+                                          >
                                               {index + 1}
                                           </TableCell>
                                           <TableCell
+                                              variant="body"
                                               align="center"
                                               className={classes.titleCell}
+                                              style={{width: "40%"}}
                                           >
                                               {product.name}
                                           </TableCell>
-                                          <TableCell
-                                              align="left"
-                                              className={
-                                                  classes.descriptionCell
-                                              }
-                                          >
-                                              {product.description}
-                                          </TableCell>
-                                          <TableCell align="center">
+                                          <TableCell variant="body" align="center" style={{width: "10%"}}>
                                               {product.price}
                                           </TableCell>
-                                          <TableCell align="center">
+                                          <TableCell variant="body" align="center" style={{width: "10%"}}>
                                               {product.quantity}
                                           </TableCell>
-                                          <TableCell align="center">
+                                          <TableCell variant="body" align="center" style={{width: "20%"}}>
                                               {product.category.name}
                                           </TableCell>
-                                          <TableCell align="center">
-                                              <Button
+                                          <TableCell variant="body" align="center" style={{width: "15%"}}>
+                                              <IconButton
                                                   onClick={() =>
                                                       showProductDetailDialog(
                                                           product
                                                       )
                                                   }
                                               >
-                                                  <Visibility /> Detail
-                                              </Button>
-                                              <Button
+                                                  <Visibility />
+                                              </IconButton>
+                                              <IconButton
                                                   onClick={() => {
                                                       handleOpen(product);
                                                   }}
                                               >
-                                                  <Edit /> Edit
-                                              </Button>
-                                              <Button
+                                                  <Edit />
+                                              </IconButton>
+                                              <IconButton
                                                   onClick={() =>
                                                       showDeleteProductDialog(
                                                           product
                                                       )
                                                   }
                                               >
-                                                  <Delete /> Delete
-                                              </Button>
+                                                  <Delete />
+                                              </IconButton>
                                           </TableCell>
                                       </TableRow>
                                   );
