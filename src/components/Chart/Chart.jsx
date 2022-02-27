@@ -7,6 +7,9 @@ import {
     YAxis,
     Label,
     ResponsiveContainer,
+    CartesianGrid,
+    Tooltip,
+    Legend,
 } from "recharts";
 const Chart = (props) => {
     const theme = useTheme();
@@ -14,8 +17,8 @@ const Chart = (props) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                width={500}
-                height={300}
+                width={"100%"}
+                height={"100%"}
                 data={props.dataChart}
                 margin={{ top: 16, right: 16, bottom: 0, left: 24 }}
             >
@@ -36,8 +39,10 @@ const Chart = (props) => {
                         Total (€)
                     </Label>
                 </YAxis>
+                <Tooltip />
+                <Legend />
                 <Line
-                    isAnimationActive={false}
+                    isAnimationActive={true}
                     type="monotone"
                     dataKey="amount"
                     stroke={theme.palette.primary.main}
