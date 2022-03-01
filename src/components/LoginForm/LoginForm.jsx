@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from '../../actions/auth';
+import { login } from "../../actions/auth";
 import {
     Avatar,
     Button,
@@ -41,7 +41,7 @@ const LoginForm = () => {
         }
     };
     return (
-        <>  
+        <>
             <Container
                 component="main"
                 maxWidth="xs"
@@ -60,9 +60,7 @@ const LoginForm = () => {
                     <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                         <LockOutlined />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
+                    <Typography variant="h4">Sign in</Typography>
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
@@ -100,6 +98,7 @@ const LoginForm = () => {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            className={classes.button}
                         >
                             Sign In
                         </Button>
@@ -110,8 +109,9 @@ const LoginForm = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href='/admin/register/' variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                <span>Don&rsquo;t have an account?</span>
+                                <Link href="/admin/register" variant="body2">
+                                    {" Sign Up"}
                                 </Link>
                             </Grid>
                         </Grid>

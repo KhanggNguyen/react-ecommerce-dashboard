@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllCategory } from './actions/category';
 import { getAllProduct } from "./actions/product";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Login, Register } from "./components";
-import { Dashboard, Categories, Products, Customers, Orders } from "./pages";
+import { Dashboard, Categories, Products, Customers, Orders, Login, Register } from "./pages";
 import { getAllOrders } from "./actions/order";
 import { getAllUser } from "./actions/user";
 
