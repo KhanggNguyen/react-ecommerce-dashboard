@@ -109,10 +109,10 @@ const LoginForm = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <span>Don&rsquo;t have an account?</span>
-                                <Link href="/admin/register" variant="body2">
+                                <span>Don&rsquo;t have an account? Contact me.</span>
+                                {/* <Link href="/admin/register" variant="body2">
                                     {" Sign Up"}
-                                </Link>
+                                </Link> */}
                             </Grid>
                         </Grid>
                     </Box>
