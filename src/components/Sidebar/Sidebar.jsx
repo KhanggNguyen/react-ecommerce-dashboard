@@ -203,15 +203,15 @@ const Sidebar = ({ title }) => {
                         variant="h6"
                         color="inherit"
                         noWrap
-                        style={{ flexGrow: 1 }}
+                        style={{ flexGrow: 1, fontWeight: 600 }}
                     >
-                        {title}
+                        {title?.toUpperCase()}
                     </Typography>
-                    <IconButton color="inherit">
+                    {/* <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
                             <Notifications />
                         </Badge>
-                    </IconButton>
+                    </IconButton> */}
                     {auth.authenticated && renderLoggedInMenu()}
                 </Toolbar>
             </AppBarStyled>

@@ -227,16 +227,16 @@ const Orders = () => {
     const renderOrders = () => {
         return (
             <Paper className={classes.tablePaper}>
-                <Table size="medium" className={classes.table}>
+                <Table size="small" className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>#</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="center">Total</TableCell>
-                            <TableCell align="center">Status</TableCell>
-                            <TableCell align="center">Payment type</TableCell>
-                            <TableCell align="center">Date ordered</TableCell>
-                            <TableCell align="center">Actions</TableCell>
+                            <TableCell variant="head"  align="center">#</TableCell>
+                            <TableCell variant="head"  align="center">Name</TableCell>
+                            <TableCell variant="head"  align="center">Total</TableCell>
+                            <TableCell variant="head"  align="center">Status</TableCell>
+                            <TableCell variant="head"  align="center">Payment type</TableCell>
+                            <TableCell variant="head"  align="center">Date ordered</TableCell>
+                            <TableCell variant="head"  align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -244,12 +244,13 @@ const Orders = () => {
                             ? order.orders.map((_order, index) => {
                                   return (
                                       <TableRow key={_order._id}>
-                                          <TableCell align="center">
+                                          <TableCell align="center"  style={{width: "5%"}}>
                                               {index + 1}
                                           </TableCell>
                                           <TableCell
                                               align="center"
                                               className={classes.titleCell}
+                                              style={{width: "20%"}}
                                           >
                                               {`${_order.user.firstName} ${_order.user.lastName}`}
                                           </TableCell>

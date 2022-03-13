@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Chart, Layout } from "../../components";
 import { Box, Toolbar, Container, Grid, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllCategory } from "../../actions/category";
+import { getAllProduct } from "../../actions/product";
+import { getAllOrders } from "../../actions/order";
+import { getAllUser } from "../../actions/user";
 
 const dataChart = [
     {
@@ -60,7 +64,18 @@ const DashboardPage = () => {
     const product = useSelector((state) => state.product);
     const user = useSelector((state) => state.user);
     const order = useSelector((state) => state.order);
+    const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     const classes = useStyles();
+
+    useEffect(() => {
+        if (auth.authenticated) {
+            dispatch(getAllCategory());
+            dispatch(getAllProduct());
+            dispatch(getAllOrders());
+            dispatch(getAllUser());
+        }
+    }, [auth.authenticated]);
 
     return (
         <>
@@ -75,8 +90,12 @@ const DashboardPage = () => {
                 >
                     <Toolbar />
                     <Container maxWidth="lg" style={{ margin: "4px 0" }}>
-                        <Grid container >
-                            <Grid item xs={12} className={classes.cardsContainer}>
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={12}
+                                className={classes.cardsContainer}
+                            >
                                 <Card
                                     title={"Products"}
                                     href={"/admin/products/"}
