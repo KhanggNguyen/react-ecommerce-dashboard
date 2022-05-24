@@ -34,7 +34,6 @@ const LoginForm = () => {
             password: data.get("password"),
         };
         // eslint-disable-next-line no-console
-        console.log(userInput);
 
         if (userInput.email && userInput.password) {
             dispatch(login(userInput));
@@ -75,6 +74,7 @@ const LoginForm = () => {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
+                            placeholder="admin@gmail.com"
                             autoFocus
                         />
                         <TextField
@@ -85,6 +85,7 @@ const LoginForm = () => {
                             label="Password"
                             type="password"
                             id="password"
+                            placeholder="123456"
                             autoComplete="current-password"
                         />
                         <FormControlLabel
