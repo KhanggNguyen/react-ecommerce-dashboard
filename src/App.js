@@ -4,28 +4,22 @@ import { getAllCategory } from './actions/category';
 import { getAllProduct } from "./actions/product";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Dashboard, Categories, Products, Customers, Orders, Login, Register } from "./pages";
-import { getAllOrders } from "./actions/order";
-import { getAllUser } from "./actions/user";
-
+import { isUserLoggedin } from "./actions/auth";
 
 const PrivateOutlet = ({ authenticated }) => {
     return authenticated ? <Outlet /> : <Navigate to="/admin/login" />;
 };
 
-
-
 const App = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
-
-    useEffect( () => {
-        if(auth.authenticated){
-            dispatch(getAllCategory());
-            dispatch(getAllProduct());
-            dispatch(getAllOrders());
-            dispatch(getAllUser());
-        }
+    
+    useEffect(() => {
+        dispatch(isUserLoggedin());
+        dispatch(getAllCategory());
+        dispatch(getAllProduct());
     }, [auth.authenticated]);
+
 
     return (
         <>
@@ -48,7 +42,7 @@ const App = () => {
                 <Route
                     element={
                         <PrivateOutlet
-                            authenticated={auth.currentUser && auth.token}
+                            authenticated={auth.currentUser && auth.authenticated}
                         />
                     }
                 >

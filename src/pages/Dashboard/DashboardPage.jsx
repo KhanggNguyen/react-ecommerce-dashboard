@@ -68,15 +68,6 @@ const DashboardPage = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    useEffect(() => {
-        if (auth.authenticated) {
-            dispatch(getAllCategory());
-            dispatch(getAllProduct());
-            dispatch(getAllOrders());
-            dispatch(getAllUser());
-        }
-    }, [auth.authenticated]);
-
     return (
         <>
             <Layout title={`Dashboard`}>

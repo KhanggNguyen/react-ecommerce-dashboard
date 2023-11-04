@@ -9,10 +9,12 @@ import {
     signupSuccess,
     signupFailure,
     logoutFailure,
+    refreshTokenStart,
+    refreshTokenFailure,
+    refreshTokenSuccess,
 } from "../redux/authRedux";
 
 export const signup = (user) => {
-    console.log(user);
     return async (dispatch) => {
         dispatch(signupStart());
         try {
@@ -22,11 +24,9 @@ export const signup = (user) => {
                 dispatch(signupSuccess());
             } else {
                 const { error } = res.data;
-                console.log(res);
                 dispatch(signupFailure(error));
             }
         } catch (err) {
-            console.log(err.response);
             const { data } = err.response ;
             dispatch(signupFailure({ error: data.message }));
         }
@@ -41,7 +41,7 @@ export const login = (user) => {
             if (res.status === 200) {
                 dispatch(loginSuccess(res.data));
             } else {
-                dispatch(loginFailure(res.data.error));
+                dispatch(loginFailure(res.data));
             }
         } catch (err) {
             dispatch(loginFailure(err));
@@ -66,17 +66,20 @@ export const logout = () => {
 
 export const isUserLoggedin = () => {
     return async (dispatch) => {
-        const auth = JSON.parse(localStorage.getItem("persist:root"))?.auth;
-        const token = auth && JSON.parse(auth).token;
+        try {
+            const res = await userRequest.post("/api/admin/isUserLoggedIn");
 
-        if (token) {
-            const user = auth && JSON.parse(auth).currentUser;
-            dispatch(
-                loginSuccess({
-                    token: token,
-                    user: user,
-                })
-            );
+            if (res.status === 401) {
+                dispatch(refreshTokenStart());  
+                const res = await userRequest.post("/api/refresh-token");
+                if(res.status >= 300){
+                    dispatch(refreshTokenFailure(res.data));
+                }else{
+                    dispatch(refreshTokenSuccess(res.data));
+                }
+            }
+        } catch (err) {
+            dispatch(refreshTokenFailure());
         }
     };
 };

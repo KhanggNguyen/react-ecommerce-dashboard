@@ -7,16 +7,19 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 //   JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser
 //     .accessToken || "";
 
-const auth = JSON.parse(localStorage.getItem("persist:root"))?.auth;
-const token = auth && JSON.parse(auth).token;
+// const auth = JSON.parse(localStorage.getItem("persist:root"))?.auth;
+// const token = auth && JSON.parse(auth).token;
 
 export const publicRequest = axios.create({
     baseURL: BASE_URL,
+    // headers: { Authorization: `Bearer ${token}` },
+    withCredentials: true,
 });
 
 export const userRequest = axios.create({
     baseURL: BASE_URL,
-    headers: { Authorization: `Bearer ${token}` },
+    // headers: { Authorization: `Bearer ${token}` },
+    withCredentials: true,
 });
 
 userRequest.interceptors.request.use((req) => {
@@ -29,11 +32,9 @@ userRequest.interceptors.request.use((req) => {
 
 userRequest.interceptors.response.use(
     (res) => {
-        console.log(res);
         return res;
     },
     (error) => {
-        console.log(error.response);
         const { status } = error.response;
         if (status === 500) {
             localStorage.clear();
@@ -42,3 +43,4 @@ userRequest.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+

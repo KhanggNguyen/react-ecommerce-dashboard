@@ -35,7 +35,6 @@ const Orders = () => {
     const [orderDetailDialog, setOrderDetailDialog] = useState(false);
     const [orderSelectedStatus, setOrderSelectedStatus] = useState(0);
 
-    useEffect(() => {}, []);
 
     const formatDate = (date) => {
         if (!date) return "";

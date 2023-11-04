@@ -25,7 +25,7 @@ export const getAllProduct = () => {
 
 export const getProductsByCategory = (categoryId) => {
     return async (dispatch) => {
-        const res = await userRequest.get(`/api/products/${categoryId}`);
+        const res = await userRequest.get(`/api/product?categoryId=${categoryId}`);
 
         if (res.status === 200) {
             dispatch(getProducts(res.data));
@@ -37,8 +37,7 @@ export const addProduct = (form) => {
     return async (dispatch) => {
         dispatch(addProductStart());
 
-        const res = await userRequest.post(`/api/product/create`, form);
-        console.log(res.data);
+        const res = await userRequest.post(`/api/admin/product`, form);
         if (res.status === 201) {
             dispatch(addProductSuccess());
             dispatch(getAllProduct());

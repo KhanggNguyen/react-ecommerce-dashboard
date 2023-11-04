@@ -30,6 +30,7 @@ import { TreeItem, TreeView } from "@material-ui/lab";
 const CategoriesPage = () => {
     const dispatch = useDispatch();
     const category = useSelector((state) => state.category);
+    const [categories, setCategories] = useState([]);
 
     const [name, setName] = useState("");
     const [parentId, setParentId] = useState("");
@@ -45,9 +46,8 @@ const CategoriesPage = () => {
     };
 
     useEffect(() => {
-        if (!category.isFetching) {
-            setOpen(false);
-        }
+        const categoryList = createCategoryList(category.categories);
+        setCategories(categoryList);
     }, [category.isFetching]);
 
     const handleClose = () => {
@@ -66,8 +66,8 @@ const CategoriesPage = () => {
         }
 
         form.append("name", name);
-        form.append("parentId", parentId);
-        form.append("image", image);
+        parentId && form.append("parentId", parentId);
+        image && form.append("image", image);
 
         dispatch(addCategory(form));
 
@@ -87,8 +87,8 @@ const CategoriesPage = () => {
 
         form.append("_id", selectedNode.value);
         form.append("name", name);
-        form.append("parentId", parentId);
-        form.append("image", image);
+        parentId && form.append("parentId", parentId);
+        image && form.append("image", image);
 
         dispatch(updateCategory(form));
 
@@ -103,7 +103,6 @@ const CategoriesPage = () => {
             setDeleteCategoryDialog(false);
             return;
         }
-
         dispatch(deleteCategory(selectedNode.value));
 
         setDeleteCategoryDialog(false);
@@ -114,7 +113,7 @@ const CategoriesPage = () => {
     };
 
     const handleUpdateOpen = () => {
-        if(!selectedNode) {
+        if (!selectedNode) {
             setUpdateCategoryDialog(false);
             return;
         }
@@ -172,8 +171,6 @@ const CategoriesPage = () => {
         return options;
     };
 
-    const categoryList = createCategoryList(category.categories);
-
     const addCategoryFormDialog = () => {
         return (
             <FormDialog
@@ -196,7 +193,7 @@ const CategoriesPage = () => {
                     value={parentId}
                     handleChange={(e) => setParentId(e.target.value)}
                     placeholder="Category Parent"
-                    options={categoryList}
+                    options={categories}
                 />
             </FormDialog>
         );
@@ -227,7 +224,7 @@ const CategoriesPage = () => {
                             value={parentId}
                             handleChange={(e) => setParentId(e.target.value)}
                             placeholder="Category Parent"
-                            options={categoryList}
+                            options={categories}
                         />
                     </Grid>
                 </Grid>
@@ -263,7 +260,7 @@ const CategoriesPage = () => {
             </FormDialog>
         );
     };
-
+    const categoryList = createCategoryList(category.categories);
     return (
         <Layout title={`Categories`}>
             <Box component="main">
@@ -303,7 +300,7 @@ const CategoriesPage = () => {
                             defaultCollapseIcon={<ExpandMore />}
                             defaultExpandIcon={<ChevronRight />}
                             onNodeSelect={(event, nodeIds) => {
-                                categoryList.map((item, index) => {
+                                categories.map((item, index) => {
                                     item.value === nodeIds &&
                                         setSelectedNode(item);
                                 });

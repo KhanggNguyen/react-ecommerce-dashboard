@@ -80,7 +80,10 @@ const ProductsPage = () => {
         return options;
     };
 
-    const categoryList = createCategoryList(category.categories);
+    const categoryList = [
+        { value: "", name: "Tous" },
+        ...createCategoryList(category.categories),
+    ];
 
     const handleProductPictures = (e) => {
         if (e.target.files[0].size < 1 * 1024 * 1024) {
@@ -101,6 +104,7 @@ const ProductsPage = () => {
             setProductPicture(productSelected.productPictures[0]);
             setProductDetailSelected(productSelected);
         } else {
+            setId("");
             setName("");
             setQuantity("");
             setPrice("");
@@ -140,7 +144,7 @@ const ProductsPage = () => {
     const handleSubmitDialog = () => {
         const form = new FormData();
 
-        form.append("_id", id);
+        id && form.append("_id", id);
         form.append("name", name);
         form.append("quantity", quantity);
         form.append("price", price);
@@ -148,16 +152,17 @@ const ProductsPage = () => {
         form.append("category", categoryId);
         if (productPictures.length > 0) {
             for (let picture of productPictures) {
-                console.log(picture);
                 form.append("productPicture", picture);
             }
         }
 
         if (productDetailSelected) {
-            dispatch(updateProduct(form)).then(() => setOpen(false));
+            dispatch(updateProduct(form));
         } else {
-            dispatch(addProduct(form)).then(() => setOpen(false));
+            dispatch(addProduct(form));
         }
+
+        setOpen(false);
     };
 
     const handleDeleteSubmit = () => {
@@ -173,15 +178,17 @@ const ProductsPage = () => {
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
-    }
-    
+    };
+
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    }
+    };
 
     const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - product.products.length) : 0;
+        page > 0
+            ? Math.max(0, (1 + page) * rowsPerPage - product.products.length)
+            : 0;
 
     const renderProducts = () => {
         return (
@@ -217,7 +224,7 @@ const ProductsPage = () => {
                                           <TableCell
                                               variant="body"
                                               align="center"
-                                              style={{width: "5%"}}
+                                              style={{ width: "5%" }}
                                           >
                                               {index + 1}
                                           </TableCell>
@@ -225,20 +232,36 @@ const ProductsPage = () => {
                                               variant="body"
                                               align="center"
                                               className={classes.titleCell}
-                                              style={{width: "40%"}}
+                                              style={{ width: "40%" }}
                                           >
                                               {product.name}
                                           </TableCell>
-                                          <TableCell variant="body" align="center" style={{width: "10%"}}>
+                                          <TableCell
+                                              variant="body"
+                                              align="center"
+                                              style={{ width: "10%" }}
+                                          >
                                               {product.price}
                                           </TableCell>
-                                          <TableCell variant="body" align="center" style={{width: "10%"}}>
+                                          <TableCell
+                                              variant="body"
+                                              align="center"
+                                              style={{ width: "10%" }}
+                                          >
                                               {product.quantity}
                                           </TableCell>
-                                          <TableCell variant="body" align="center" style={{width: "20%"}}>
+                                          <TableCell
+                                              variant="body"
+                                              align="center"
+                                              style={{ width: "20%" }}
+                                          >
                                               {product.category.name}
                                           </TableCell>
-                                          <TableCell variant="body" align="center" style={{width: "15%"}}>
+                                          <TableCell
+                                              variant="body"
+                                              align="center"
+                                              style={{ width: "15%" }}
+                                          >
                                               <IconButton
                                                   onClick={() =>
                                                       showProductDetailDialog(
@@ -430,7 +453,7 @@ const ProductsPage = () => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                        {productPicture.img ? (
+                        {productPicture?.img ? (
                             <ButtonBase className={classes.image}>
                                 <img
                                     className={classes.img}

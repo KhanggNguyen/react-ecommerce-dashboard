@@ -57,6 +57,24 @@ const authSlice = createSlice({
             state.error = true;
             state.message = action.payload.error;
         },
+        refreshTokenStart: (state) => {
+            state.error = false;
+            state.message = "";
+            state.isFetching = true;
+        },
+        refreshTokenSuccess: (state, action) => {
+            state.isFetching = false;
+            state.currentUser = action.payload.user;
+            state.token = action.payload.token;
+            state.authenticated = true;
+        },
+        refreshTokenFailure: (state, action) => {
+            state.isFetching = false;
+            state.error = true;
+            state.currentUser = null;
+            state.authenticated = false;
+            state.message = action.message;
+        },
     },
 });
 
@@ -69,7 +87,10 @@ export const {
     logoutFailure,
     signupStart,
     signupSuccess,
-    signupFailure
+    signupFailure,
+    refreshTokenStart,
+    refreshTokenFailure,
+    refreshTokenSuccess
 } = authSlice.actions;
 
 export default authSlice.reducer;

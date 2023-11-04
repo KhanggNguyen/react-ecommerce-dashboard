@@ -13,7 +13,7 @@ export const getAllUser = () => {
     return async (dispatch) => {
         dispatch(getUsersStart());
 
-        const res = await userRequest.post("/api/admin/users");
+        const res = await userRequest.post("/api/users");
 
         if (res.status === 200) {
             dispatch(getUserSuccess(res.data));
