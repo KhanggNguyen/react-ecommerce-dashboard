@@ -1,9 +1,18 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCategory } from './actions/category';
+import { getAllCategory } from "./actions/category";
 import { getAllProduct } from "./actions/product";
+import { getAllUser } from "./actions/user";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Dashboard, Categories, Products, Customers, Orders, Login, Register } from "./pages";
+import {
+    Dashboard,
+    Categories,
+    Products,
+    Customers,
+    Orders,
+    Login,
+    Register,
+} from "./pages";
 import { isUserLoggedin } from "./actions/auth";
 
 const PrivateOutlet = ({ authenticated }) => {
@@ -13,13 +22,13 @@ const PrivateOutlet = ({ authenticated }) => {
 const App = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
-    
+
     useEffect(() => {
         dispatch(isUserLoggedin());
         dispatch(getAllCategory());
         dispatch(getAllProduct());
+        dispatch(getAllUser());
     }, [auth.authenticated]);
-
 
     return (
         <>
@@ -42,7 +51,9 @@ const App = () => {
                 <Route
                     element={
                         <PrivateOutlet
-                            authenticated={auth.currentUser && auth.authenticated}
+                            authenticated={
+                                auth.currentUser && auth.authenticated
+                            }
                         />
                     }
                 >

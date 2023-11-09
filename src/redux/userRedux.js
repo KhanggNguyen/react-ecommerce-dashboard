@@ -19,7 +19,6 @@ const userSlice = createSlice({
         },
         getUserSuccess: (state, action) => {
             state.isFetching = false;
-            console.log(action.payload);
             state.users = action.payload.users;
         },
         getUserFailure: (state, action) => {
