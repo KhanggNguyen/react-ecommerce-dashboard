@@ -14,6 +14,7 @@ import {
     Register,
 } from "./pages";
 import { isUserLoggedin } from "./actions/auth";
+import { getAllOrders } from "./actions/order";
 
 const PrivateOutlet = ({ authenticated }) => {
     return authenticated ? <Outlet /> : <Navigate to="/admin/login" />;
@@ -27,6 +28,7 @@ const App = () => {
         dispatch(isUserLoggedin());
         dispatch(getAllCategory());
         dispatch(getAllProduct());
+        dispatch(getAllOrders());
         dispatch(getAllUser());
     }, [auth.authenticated]);
 
